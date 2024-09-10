@@ -1,3 +1,58 @@
 <resources>
     <string name="app_name">EmmaAndroidExample</string>
+
+    <string name="deeplink_title">Deeplink</string>
+    <string name="deeplink_description">Received deeplink will be displayed here.</string>
+    <string name="deeplink_status">No deeplink</string>
+
+    <string name="session_title">Session</string>
+    <string name="session_description">Session is required. Usually, it should be triggered when the App is ready.</string>
+    <string name="session_status">Session started</string>
+    <string name="session_button_start_session">Start session</string>
+
+    <string name="register_title">Deeplink</string>
+    <string name="register_button_register_user">Register user</string>
+
+    <string name="log_title">Log in User</string>
+    <string name="log_button_log_in_user">Log in user</string>
+
+    <string name="events_title">Events and Extras</string>
+    <string name="events_description">These buttons do not have UI feedback.</string>
+    <string name="events_button_track_event">Track event</string>
+    <string name="events_button_add_user">Add user tag \'tag'</string>
+
+    <string name="communication_title">In-App Communication</string>
+    <string name="communication_description">Try our in-app communications.</string>
+    <string name="communication_button_show_adball">Show adball</string>
+    <string name="communication_button_show_startview">Show startview</string>
+    <string name="communication_button_show_strip">Show strip</string>
+    <string name="communication_button_show_native_ad">Show native ad</string>
+
+    <string name="orders_title">Orders and Products</string>
+    <string name="orders_description">Track your orders.</string>
+    <string name="orders_button_start_order">Start order</string>
+    <string name="orders_button_add_order">Add product</string>
+    <string name="orders_button_track_order">Track order</string>
+    <string name="orders_button_cancel_order">Cancel order</string>
+
+    <string name="idfa_title">IDFA and iOS</string>
+    <string name="idfa_description">Request tracking with IDFA for iOS devices.</string>
+    <string name="idfa_button_request_idfa_tracking">Request idfa tracking</string>
+
+    <string name="learn_more_title">Learn More</string>
+    <string name="learn_more_description">Read the docs to discover what to do next:</string>
+    <string name="emma_sdk_title">EMMA SDK</string>
+    <string name="emma_sdk_description">Documentation &amp; Support</string>
+    <string name="ios_title">iOS</string>
+    <string name="ios_description">EMMA SDK for iOS</string>
+    <string name="android_title">Android</string>
+    <string name="android_description">EMMA SDK for Android</string>
+    <string name="cordova_title">Cordova</string>
+    <string name="cordova_description">EMMA SDK for Cordova</string>
+    <string name="ionic_title">Ionic</string>
+    <string name="ionic_description">EMMA SDK for Ionic</string>
+    <string name="flutter_title">Flutter</string>
+    <string name="flutter_description">EMMA SDK for Flutter</string>
+    <string name="Xamarin_title">Xamarin</string>
+    <string name="Xamarin_description">EMMA SDK for Xamarin</string>
 </resources>
