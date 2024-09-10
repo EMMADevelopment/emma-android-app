@@ -1,6 +1,6 @@
 package com.emma.emmaandroidexample.domain
 
 data class Button(
-    val title: String,
+    val title: Int,
     val active: Boolean
 )
