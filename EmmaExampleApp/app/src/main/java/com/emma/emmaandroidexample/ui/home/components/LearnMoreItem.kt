@@ -1,4 +1,4 @@
-package com.emma.emmaandroidexample.ui.components
+package com.emma.emmaandroidexample.ui.home.components
 
 import android.content.Intent
 import android.net.Uri

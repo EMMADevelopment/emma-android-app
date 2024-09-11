@@ -1,6 +1,7 @@
-package com.emma.emmaandroidexample.ui.components
+package com.emma.emmaandroidexample.ui.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,13 +20,18 @@ import com.emma.emmaandroidexample.ui.theme.EmmaDark
 import com.emma.emmaandroidexample.ui.theme.EmmaLight
 
 @Composable
-fun Button(active: Boolean, text: String) {
+fun EmmaButton(
+    active: Boolean,
+    text: String,
+    onClick: () -> Unit
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .height(44.dp)
             .fillMaxWidth()
             .background(if (active) EmmaDark else EmmaLight)
+            .clickable(enabled = active) { onClick() }
     ) {
         Text(
             text.uppercase(),
@@ -37,9 +43,17 @@ fun Button(active: Boolean, text: String) {
 
 @Preview(showSystemUi = true)
 @Composable
-fun Button_Preview() {
+fun EmmaButton_Preview() {
     Column {
-        Button(active = true, text = stringResource(id = R.string.session_button_start_session))
-        Button(active = false, text = stringResource(id = R.string.register_button_register_user))
+        EmmaButton(
+            active = true,
+            text = stringResource(id = R.string.session_button_start_session),
+            onClick = { }
+        )
+        EmmaButton(
+            active = false,
+            text = stringResource(id = R.string.register_button_register_user),
+            onClick = { }
+        )
     }
 }

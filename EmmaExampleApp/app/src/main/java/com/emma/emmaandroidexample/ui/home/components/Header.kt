@@ -1,4 +1,4 @@
-package com.emma.emmaandroidexample.ui.components
+package com.emma.emmaandroidexample.ui.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

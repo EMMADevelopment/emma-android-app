@@ -1,4 +1,4 @@
-package com.emma.emmaandroidexample.ui.components
+package com.emma.emmaandroidexample.ui.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +17,8 @@ import com.emma.emmaandroidexample.domain.Button
 @Composable
 fun ButtonsGrid(
     buttons: List<Button>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit,
 ) {
     val numberOfColumns = 2
 
@@ -37,7 +38,11 @@ fun ButtonsGrid(
                             .weight(1f),
                         contentAlignment = Alignment.Center
                     ) {
-                        Button(active = item.active, text = stringResource(id = item.title))
+                        EmmaButton(
+                            active = item.active,
+                            text = stringResource(id = item.title),
+                            onClick = { onClick(item.title)}
+                        )
                     }
                 }
             }
@@ -53,21 +58,24 @@ fun ButtonsGrid_Preview() {
     ) {
         ButtonsGrid(
             buttons = listOf(
-                Button(title = R.string.session_button_start_session, active = false),
-            )
+                Button(title = R.string.session_button_start_session, active = false)
+            ),
+            onClick = { }
         )
         ButtonsGrid(
             buttons = listOf(
                 Button(title = R.string.session_button_start_session, active = false),
                 Button(title = R.string.register_button_register_user, active = true),
-            )
+            ),
+            onClick = { }
         )
         ButtonsGrid(
             buttons = listOf(
                 Button(title = R.string.orders_button_start_order, active = false),
                 Button(title = R.string.orders_button_add_order, active = true),
                 Button(title = R.string.orders_button_track_order, active = true),
-            )
+            ),
+            onClick = { }
         )
         ButtonsGrid(
             buttons = listOf(
@@ -75,7 +83,8 @@ fun ButtonsGrid_Preview() {
                 Button(title = R.string.communication_button_show_startview, active = true),
                 Button(title = R.string.communication_button_show_strip, active = true),
                 Button(title = R.string.communication_button_show_native_ad, active = true),
-            )
+            ),
+            onClick = { }
         )
     }
 }

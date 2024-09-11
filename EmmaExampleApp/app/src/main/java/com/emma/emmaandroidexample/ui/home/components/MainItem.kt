@@ -1,4 +1,4 @@
-package com.emma.emmaandroidexample.ui.components
+package com.emma.emmaandroidexample.ui.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +23,8 @@ fun MainItem(
     title: String,
     description: String?,
     statusInfo: String?,
-    buttons: List<Button>?
+    buttons: List<Button>?,
+    onClick: (Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -58,8 +59,11 @@ fun MainItem(
             )
         }
         if (buttons != null) {
-            ButtonsGrid(buttons = buttons, modifier = Modifier
-                .padding(top = 4.dp))
+            ButtonsGrid(
+                buttons = buttons,
+                onClick = { stringId -> onClick(stringId) },
+                modifier = Modifier
+                    .padding(top = 4.dp))
         }
     }
 }
@@ -73,7 +77,8 @@ fun MainItem_Preview() {
                 title = "Deeplink",
                 description = "Received deeplink will be displayed here.",
                 statusInfo = "No deeplink",
-                buttons = null
+                buttons = null,
+                onClick = { }
             )
         }
         item {
@@ -83,7 +88,8 @@ fun MainItem_Preview() {
                 statusInfo = "Session started",
                 buttons = listOf(
                     Button(title = R.string.session_button_start_session, active = false)
-                )
+                ),
+                onClick = { }
             )
         }
         item {
@@ -93,7 +99,8 @@ fun MainItem_Preview() {
                 statusInfo = null,
                 buttons = listOf(
                     Button(title = R.string.register_button_register_user, active = true)
-                )
+                ),
+                onClick = { }
             )
         }
         item {
@@ -104,7 +111,8 @@ fun MainItem_Preview() {
                 buttons = listOf(
                     Button(title = R.string.events_button_track_event, active = true),
                     Button(title = R.string.events_button_add_user, active = true),
-                )
+                ),
+                onClick = { }
             )
         }
         item {
@@ -117,7 +125,8 @@ fun MainItem_Preview() {
                     Button(title = R.string.communication_button_show_startview, active = true),
                     Button(title = R.string.communication_button_show_strip, active = true),
                     Button(title = R.string.communication_button_show_native_ad, active = true),
-                )
+                ),
+                onClick = { }
             )
         }
     }
