@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.emma.emmaandroidexample.ui.home.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import com.emma.emmaandroidexample.ui.navigation.EmmaAndroidExampleNavigation
 import com.emma.emmaandroidexample.ui.theme.EmmaAndroidExampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    val navController = rememberNavController()
+                    EmmaAndroidExampleNavigation(navController = navController)
                 }
             }
         }

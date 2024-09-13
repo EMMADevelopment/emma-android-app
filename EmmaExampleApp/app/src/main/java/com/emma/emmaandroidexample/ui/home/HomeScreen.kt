@@ -10,15 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.R
 import com.emma.emmaandroidexample.data.learnMoreData
 import com.emma.emmaandroidexample.data.mainData
 import com.emma.emmaandroidexample.ui.home.components.Header
 import com.emma.emmaandroidexample.ui.home.components.LearnMoreItem
 import com.emma.emmaandroidexample.ui.home.components.MainItem
+import com.emma.emmaandroidexample.ui.navigation.Routes
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavHostController
+) {
     LazyColumn {
         item {
             Header()
@@ -30,7 +35,7 @@ fun HomeScreen() {
                 statusInfo = it.statusInfo?.let { it1 -> stringResource(id = it1) },
                 buttons = it.buttons
             ) { stringId ->
-                manageButtonClick(stringId)
+                manageButtonClick(stringId, navController)
             }
         }
         item {
@@ -39,7 +44,7 @@ fun HomeScreen() {
     }
 }
 
-fun manageButtonClick(stringId: Int) {
+fun manageButtonClick(stringId: Int, navController: NavHostController) {
     when (stringId) {
         R.string.session_button_start_session -> Log.d("SALVA", "START SESSION")
         R.string.register_button_register_user -> Log.d("SALVA", "REGISTER USER")
@@ -49,7 +54,10 @@ fun manageButtonClick(stringId: Int) {
         R.string.communication_button_show_adball -> Log.d("SALVA", "SHOW ADBALL")
         R.string.communication_button_show_startview -> Log.d("SALVA", "SHOW STARTVIEW")
         R.string.communication_button_show_strip -> Log.d("SALVA", "SHOW STRIP")
-        R.string.communication_button_show_native_ad -> Log.d("SALVA", "SHOW NATIVE AD -> NAVIGATING...")
+        R.string.communication_button_show_native_ad -> {
+            Log.d("SALVA", "SHOW NATIVE AD -> NAVIGATING...")
+            navController.navigate(Routes.NativeAdScreen.route)
+        }
         R.string.orders_button_start_order -> Log.d("SALVA", "START ORDER")
         R.string.orders_button_add_order -> Log.d("SALVA", "ADD PRODUCT")
         R.string.orders_button_track_order -> Log.d("SALVA", "TRACK ORDER")
@@ -80,5 +88,6 @@ fun Footer() {
 @Preview(showSystemUi = true)
 @Composable
 fun TestMain_Preview() {
-    HomeScreen()
+    val navController = rememberNavController()
+    HomeScreen(navController)
 }
