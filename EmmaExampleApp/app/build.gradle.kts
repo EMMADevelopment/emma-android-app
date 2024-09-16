@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -54,6 +55,9 @@ dependencies {
 
     // EMMA SDK
     implementation("io.emma:eMMaSDK:4.14.+")
+
+    // FIREBASE
+    implementation("com.google.firebase:firebase-messaging:24.0.1")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.8.0")

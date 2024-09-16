@@ -58,6 +58,15 @@
         <meta-data
             android:name="io.emma.DEEPLINK_OPEN_ACTIVITY"
             android:value="com.emma.emmaandroidexample.CustomDeeplinkActivity" />
+
+        <service
+            android:name="io.emma.android.push.EMMAFcmMessagingService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
