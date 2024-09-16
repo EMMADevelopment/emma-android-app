@@ -29,6 +29,7 @@ import com.emma.emmaandroidexample.ui.theme.EmmaDark
 fun Header() {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier
+            .padding(bottom = 16.dp)
             .height(250.dp)
             .fillMaxWidth()
             .background(EmmaDark)
@@ -71,7 +72,6 @@ fun Header() {
             }
         }
     }
-
 }
 
 @Preview(showSystemUi = true)

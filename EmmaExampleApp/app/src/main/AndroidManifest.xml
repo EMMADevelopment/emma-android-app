@@ -15,6 +15,9 @@
         android:theme="@style/Theme.EmmaAndroidExample"
         tools:targetApi="31">
         <activity
+            android:name=".emma.CustomDeeplinkActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -25,6 +28,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="io.emma.android.activities.EMMADeepLinkActivity"
+            android:launchMode="singleTask"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="subdomain.powlink.io" />
+                <data android:scheme="https" />
+                <data android:host="shortsubdomain.pwlnk.io" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="io.emma.DEEPLINK_OPEN_ACTIVITY"
+            android:value="com.emma.emmaandroidexample.CustomDeeplinkActivity" />
     </application>
 
 </manifest>

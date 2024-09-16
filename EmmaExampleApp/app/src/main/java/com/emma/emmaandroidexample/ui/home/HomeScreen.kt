@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.R
+import com.emma.emmaandroidexample.data.MainItemData
 import com.emma.emmaandroidexample.data.learnMoreData
 import com.emma.emmaandroidexample.data.mainData
 import com.emma.emmaandroidexample.ui.home.components.Header
@@ -22,12 +23,31 @@ import com.emma.emmaandroidexample.ui.navigation.Routes
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    deeplink: String?
 ) {
     LazyColumn {
+        // HEADER
         item {
             Header()
         }
+        // DEEPLINK
+        if (deeplink != null) {
+            item {
+                MainItem(title = "Deeplink", description = deeplink, statusInfo = "Deeplink displayed", buttons = null, onClick = {})
+            }
+        } else {
+            item {
+                MainItem(
+                    title = stringResource(R.string.deeplink_title),
+                    description = stringResource(R.string.deeplink_description),
+                    statusInfo = stringResource(R.string.deeplink_status),
+                    buttons = null,
+                    onClick = {}
+                )
+            }
+        }
+        // THE OTHERS SECTIONS
         items(mainData) {
             MainItem(
                 title = stringResource(id = it.title),
@@ -38,6 +58,7 @@ fun HomeScreen(
                 manageButtonClick(stringId, navController)
             }
         }
+        // FOOTER
         item {
             Footer()
         }
@@ -89,5 +110,5 @@ fun Footer() {
 @Composable
 fun TestMain_Preview() {
     val navController = rememberNavController()
-    HomeScreen(navController)
+    HomeScreen(navController, "https/...")
 }

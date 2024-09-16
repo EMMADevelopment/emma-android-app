@@ -12,12 +12,6 @@ data class MainItemData(
 
 val mainData: List<MainItemData> = listOf(
     MainItemData(
-        title = R.string.deeplink_title,
-        description = R.string.deeplink_description,
-        statusInfo = R.string.deeplink_status,
-        buttons = null
-    ),
-    MainItemData(
         title = R.string.session_title,
         description = R.string.session_description,
         statusInfo = R.string.session_status,
