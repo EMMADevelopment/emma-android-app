@@ -24,6 +24,7 @@ import com.emma.emmaandroidexample.ui.navigation.Routes
 @Composable
 fun HomeScreen(
     navController: NavHostController,
+    homeViewModel: HomeViewModel,
     deeplink: String?
 ) {
     LazyColumn {
@@ -55,7 +56,7 @@ fun HomeScreen(
                 statusInfo = it.statusInfo?.let { it1 -> stringResource(id = it1) },
                 buttons = it.buttons
             ) { stringId ->
-                manageButtonClick(stringId, navController)
+                manageButtonClick(stringId, navController, homeViewModel)
             }
         }
         // FOOTER
@@ -65,10 +66,13 @@ fun HomeScreen(
     }
 }
 
-fun manageButtonClick(stringId: Int, navController: NavHostController) {
+fun manageButtonClick(stringId: Int, navController: NavHostController, homeViewModel: HomeViewModel) {
     when (stringId) {
         R.string.session_button_start_session -> Log.d("SALVA", "START SESSION")
-        R.string.register_button_register_user -> Log.d("SALVA", "REGISTER USER")
+        R.string.register_button_register_user -> {
+            Log.d("SALVA", "REGISTER USER")
+            homeViewModel.register("654321", "testSalva@emma.io")
+        }
         R.string.log_button_log_in_user -> Log.d("SALVA", "LOG IN USER")
         R.string.events_button_track_event -> Log.d("SALVA", "TRACK EVENT")
         R.string.events_button_add_user -> Log.d("SALVA", "ADD USER TAG 'TAG'")
@@ -110,5 +114,6 @@ fun Footer() {
 @Composable
 fun TestMain_Preview() {
     val navController = rememberNavController()
-    HomeScreen(navController, "https/...")
+    val homeViewModel = HomeViewModel()
+    HomeScreen(navController, homeViewModel, "https/...")
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.emma.PushActivity
+import com.emma.emmaandroidexample.ui.home.HomeViewModel
 import com.emma.emmaandroidexample.ui.navigation.EmmaAndroidExampleNavigation
 import com.emma.emmaandroidexample.ui.navigation.Routes
 import com.emma.emmaandroidexample.ui.theme.EmmaAndroidExampleTheme
@@ -23,6 +25,10 @@ import io.emma.android.model.EMMAPushCampaign
 import io.emma.android.model.EMMAPushOptions
 
 class MainActivity : ComponentActivity() {
+    // VIEW MODELS
+    private val homeViewModel: HomeViewModel by viewModels()
+
+    // LIFECYCLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         navController.navigate(Routes.HomeScreen.createRouteWithDeeplink(deeplinkUrl ?: "Deeplink did not arrive"))
                     }
 
-                    EmmaAndroidExampleNavigation(navController = navController)
+                    EmmaAndroidExampleNavigation(navController = navController, homeViewModel)
                 }
             }
         }
