@@ -1,5 +1,6 @@
 package com.emma.emmaandroidexample.ui.home
 
+import android.util.ArrayMap
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -73,9 +74,21 @@ fun manageButtonClick(stringId: Int, navController: NavHostController, homeViewM
             Log.d("SALVA", "REGISTER USER")
             homeViewModel.register("654321", "testSalva@emma.io")
         }
-        R.string.log_button_log_in_user -> Log.d("SALVA", "LOG IN USER")
-        R.string.events_button_track_event -> Log.d("SALVA", "TRACK EVENT")
-        R.string.events_button_add_user -> Log.d("SALVA", "ADD USER TAG 'TAG'")
+        R.string.log_button_log_in_user -> {
+            Log.d("SALVA", "LOG IN USER")
+            homeViewModel.login("654321", "testSalva@emma.io")
+        }
+        R.string.events_button_track_event -> {
+            Log.d("SALVA", "TRACK EVENT")
+            val attributes = mapOf<String, Any>("AttributeTest" to "EventTestSalva")
+            homeViewModel.trackEvent("a6638efafbe61f63ee3fe31d7db476d4", attributes)
+        }
+        R.string.events_button_add_user -> {
+            Log.d("SALVA", "ADD USER TAG 'TAG'")
+            val tags = ArrayMap<String, String>()
+            tags["TAG"] = "TEST SALVA"
+            homeViewModel.addUserTag(tags)
+        }
         R.string.communication_button_show_adball -> Log.d("SALVA", "SHOW ADBALL")
         R.string.communication_button_show_startview -> Log.d("SALVA", "SHOW STARTVIEW")
         R.string.communication_button_show_strip -> Log.d("SALVA", "SHOW STRIP")
@@ -83,10 +96,22 @@ fun manageButtonClick(stringId: Int, navController: NavHostController, homeViewM
             Log.d("SALVA", "SHOW NATIVE AD -> NAVIGATING...")
             navController.navigate(Routes.NativeAdScreen.route)
         }
-        R.string.orders_button_start_order -> Log.d("SALVA", "START ORDER")
-        R.string.orders_button_add_order -> Log.d("SALVA", "ADD PRODUCT")
-        R.string.orders_button_track_order -> Log.d("SALVA", "TRACK ORDER")
-        R.string.orders_button_cancel_order -> Log.d("SALVA", "CANCEL ORDER")
+        R.string.orders_button_start_order -> {
+            Log.d("SALVA", "START ORDER")
+            homeViewModel.startOrder("<ORDER_ID_SALVA_TEST>", "<CUSTOMER_ID_SALVA_TEST", 13.03f)
+        }
+        R.string.orders_button_add_order -> {
+            Log.d("SALVA", "ADD PRODUCT")
+            homeViewModel.addProduct("<PRODUCT_ID_SALVA_TEST>", "<PRODUCT_NAME_SALVA_TEST>", 1.0f, 13.03f)
+        }
+        R.string.orders_button_track_order -> {
+            Log.d("SALVA", "TRACK ORDER")
+            homeViewModel.trackOrder()
+        }
+        R.string.orders_button_cancel_order -> {
+            Log.d("SALVA", "CANCEL ORDER")
+            homeViewModel.cancelTransaction("<ORDER_ID_SALVA_TEST>")
+        }
         R.string.idfa_button_request_idfa_tracking -> Log.d("SALVA", "REQUEST IDFA TRACKING")
         else -> {
             Log.d("SALVA", "Button not found!")
