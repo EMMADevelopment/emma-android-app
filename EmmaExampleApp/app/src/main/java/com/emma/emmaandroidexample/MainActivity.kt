@@ -16,12 +16,13 @@ import com.emma.emmaandroidexample.emma.PushActivity
 import com.emma.emmaandroidexample.ui.navigation.EmmaAndroidExampleNavigation
 import com.emma.emmaandroidexample.ui.navigation.Routes
 import com.emma.emmaandroidexample.ui.theme.EmmaAndroidExampleTheme
+import com.emma.emmaandroidexample.ui.theme.EmmaDark
 import io.emma.android.EMMA
 import io.emma.android.interfaces.EMMANotificationInterface
 import io.emma.android.model.EMMAPushCampaign
 import io.emma.android.model.EMMAPushOptions
 
-class MainActivity : ComponentActivity(), EMMANotificationInterface {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface {
 
         // INICIALIZACIÓN DEL SISTEMA DE PUSH
         val pushOpt = EMMAPushOptions.Builder(PushActivity::class.java, R.drawable.ic_launcher_foreground)
-            .setNotificationColor(ContextCompat.getColor(this, R.color.purple_200))
+            .setNotificationColor(EmmaDark.value.toInt())
             .setNotificationChannelName("My custom channel")
             .build()
 
@@ -63,14 +64,5 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface {
                 }
             }
         }
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        EMMA.getInstance().onNewNotification(intent, true) // Verificará si el usuario ha recibido una notificación cuando la app esta abierta
-    }
-
-    override fun onPushOpen(pushCampaign: EMMAPushCampaign) {
-        Log.d("SALVA", pushCampaign.message)
     }
 }
