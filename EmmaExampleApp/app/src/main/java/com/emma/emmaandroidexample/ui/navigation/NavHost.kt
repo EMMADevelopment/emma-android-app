@@ -8,11 +8,13 @@ import androidx.navigation.navArgument
 import com.emma.emmaandroidexample.ui.home.HomeScreen
 import com.emma.emmaandroidexample.ui.home.HomeViewModel
 import com.emma.emmaandroidexample.ui.nativeAd.NativeAdScreen
+import com.emma.emmaandroidexample.ui.nativeAd.NativeAdViewModel
 
 @Composable
 fun EmmaAndroidExampleNavigation(
     navController: NavHostController,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    nativeAdViewModel: NativeAdViewModel
 ) {
     NavHost(navController = navController, startDestination = Routes.HomeScreen.createRoute()) {
         // HOME SCREEN
@@ -29,7 +31,7 @@ fun EmmaAndroidExampleNavigation(
         }
         // NATIVE AD SCREEN
         composable(Routes.NativeAdScreen.route) {
-            NativeAdScreen()
+            NativeAdScreen(nativeAdViewModel)
         }
     }
 }

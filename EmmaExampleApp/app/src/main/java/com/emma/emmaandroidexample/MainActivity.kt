@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.emma.PushActivity
 import com.emma.emmaandroidexample.ui.home.HomeViewModel
+import com.emma.emmaandroidexample.ui.nativeAd.NativeAdViewModel
 import com.emma.emmaandroidexample.ui.navigation.EmmaAndroidExampleNavigation
 import com.emma.emmaandroidexample.ui.navigation.Routes
 import com.emma.emmaandroidexample.ui.theme.EmmaAndroidExampleTheme
@@ -27,6 +28,7 @@ import io.emma.android.model.EMMAPushOptions
 class MainActivity : ComponentActivity() {
     // VIEW MODELS
     private val homeViewModel: HomeViewModel by viewModels()
+    private val nativeAdViewModel: NativeAdViewModel by viewModels()
 
     // LIFECYCLE
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +68,7 @@ class MainActivity : ComponentActivity() {
                         navController.navigate(Routes.HomeScreen.createRouteWithDeeplink(deeplinkUrl ?: "Deeplink did not arrive"))
                     }
 
-                    EmmaAndroidExampleNavigation(navController = navController, homeViewModel)
+                    EmmaAndroidExampleNavigation(navController, homeViewModel, nativeAdViewModel)
                 }
             }
         }
