@@ -71,7 +71,7 @@ val mainData: List<MainItemData> = listOf(
         description = R.string.idfa_description,
         statusInfo = null,
         buttons = listOf(
-            Button(title = R.string.idfa_button_request_idfa_tracking, active = true)
+            Button(title = R.string.idfa_button_request_idfa_tracking, active = false)
         )
     ),
     MainItemData(

@@ -1,6 +1,5 @@
 package com.emma.emmaandroidexample
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -11,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.emma.PushActivity
 import com.emma.emmaandroidexample.ui.home.HomeViewModel
@@ -21,11 +19,12 @@ import com.emma.emmaandroidexample.ui.navigation.Routes
 import com.emma.emmaandroidexample.ui.theme.EmmaAndroidExampleTheme
 import com.emma.emmaandroidexample.ui.theme.EmmaDark
 import io.emma.android.EMMA
-import io.emma.android.interfaces.EMMANotificationInterface
-import io.emma.android.model.EMMAPushCampaign
+import io.emma.android.interfaces.EMMADeviceIdListener
+import io.emma.android.interfaces.EMMAUserInfoInterface
 import io.emma.android.model.EMMAPushOptions
+import org.json.JSONObject
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), EMMAUserInfoInterface, EMMADeviceIdListener {
     // VIEW MODELS
     private val homeViewModel: HomeViewModel by viewModels()
     private val nativeAdViewModel: NativeAdViewModel by viewModels()
@@ -53,6 +52,15 @@ class MainActivity : ComponentActivity() {
 
         EMMA.getInstance().startPushSystem(pushOpt)
 
+        // Recuperar el identificador interno de EMMA
+        EMMA.getInstance().getUserID()
+
+        // Recuperar el perfil del usuario desde la aplicación
+        EMMA.getInstance().getUserInfo()
+
+        // Obtener el identificador del dispositivo (tipo UUID V4)
+        EMMA.getInstance().getDeviceId(this)
+
         setContent {
             EmmaAndroidExampleTheme {
                 // A surface container using the 'background' color from the theme
@@ -72,5 +80,19 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun OnGetUserInfo(userInfo: JSONObject?) {
+        userInfo?.let {
+            Log.d("MainActivity", "UserInfo: $userInfo")
+        }
+    }
+
+    override fun OnGetUserID(userId: Int) {
+        Log.d("MainActivity", "UserId: $userId.toString()")
+    }
+
+    override fun onObtained(deviceId: String?) {
+        Log.d("MainActivity", "DeviceId: $deviceId.toString()")
     }
 }
