@@ -1,5 +1,6 @@
 package com.emma.emmaandroidexample
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -10,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.emma.PushActivity
 import com.emma.emmaandroidexample.ui.home.HomeViewModel
@@ -20,26 +22,50 @@ import com.emma.emmaandroidexample.ui.theme.EmmaAndroidExampleTheme
 import com.emma.emmaandroidexample.ui.theme.EmmaDark
 import io.emma.android.EMMA
 import io.emma.android.interfaces.EMMADeviceIdListener
+import io.emma.android.interfaces.EMMANotificationInterface
+import io.emma.android.interfaces.EMMASessionStartListener
 import io.emma.android.interfaces.EMMAUserInfoInterface
+import io.emma.android.model.EMMAPushCampaign
 import io.emma.android.model.EMMAPushOptions
 import org.json.JSONObject
 
-class MainActivity : ComponentActivity(), EMMAUserInfoInterface, EMMADeviceIdListener {
+class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInfoInterface, EMMADeviceIdListener {
     // VIEW MODELS
+    private val mainViewModel: MainViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
-    private val nativeAdViewModel: NativeAdViewModel by viewModels()
+    //private val nativeAdViewModel: NativeAdViewModel by viewModels()
+
+    // PROPERTIES
+    private var sessionStarted: Boolean = false
 
     // LIFECYCLE
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().setKeepOnScreenCondition {
+            !mainViewModel.isReady.value
+        }
 
         // INICIALIZACIÓN DE EMMA
-        val configuration = EMMA.Configuration.Builder(this)
-            .setSessionKey("")
-            .setDebugActive(BuildConfig.DEBUG)
-            .build()
+        try {
+            val configuration = EMMA.Configuration.Builder(this)
+                .setSessionKey("emmamobileM6wQcLX8S")
+                .setDebugActive(BuildConfig.DEBUG)
+                .build()
 
-        EMMA.getInstance().startSession(configuration)
+            EMMA.getInstance().startSession(
+                configuration,
+                EMMASessionStartListener { EMMA.getInstance().setCurrentActivity(this) }
+            )
+
+            Log.d("MainActivity", "EMMA initialized")
+            mainViewModel.emmaIsInitialized()
+            sessionStarted = true
+        } catch (e: Exception) {
+            mainViewModel.emmaIsNotInitialized()
+
+            Log.d("MainActivity", "EMMA NOT initialized")
+        }
+
 
         // SOLICTAR PERMISO AL USAURIO PARA RECIBIR NOTIFICACIONES
         EMMA.getInstance().requestNotificationPermission()
@@ -51,6 +77,8 @@ class MainActivity : ComponentActivity(), EMMAUserInfoInterface, EMMADeviceIdLis
             .build()
 
         EMMA.getInstance().startPushSystem(pushOpt)
+
+        EMMA.getInstance().checkForRichPushUrl() // Para comprobar el richPushUrl cuando se abre la app desde la notificación
 
         // Recuperar el identificador interno de EMMA
         EMMA.getInstance().getUserID()
@@ -76,10 +104,20 @@ class MainActivity : ComponentActivity(), EMMAUserInfoInterface, EMMADeviceIdLis
                         navController.navigate(Routes.HomeScreen.createRouteWithDeeplink(deeplinkUrl ?: "Deeplink did not arrive"))
                     }
 
-                    EmmaAndroidExampleNavigation(navController, homeViewModel, nativeAdViewModel)
+                    EmmaAndroidExampleNavigation(navController, homeViewModel, sessionStarted)
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        EMMA.getInstance().onNewNotification(intent, true)
+    }
+
+    // Controlar qué se recibe de un Push
+    override fun onPushOpen(pushCampaign: EMMAPushCampaign) {
+        Log.d("MainActivity", pushCampaign.message)
     }
 
     override fun OnGetUserInfo(userInfo: JSONObject?) {
@@ -89,10 +127,10 @@ class MainActivity : ComponentActivity(), EMMAUserInfoInterface, EMMADeviceIdLis
     }
 
     override fun OnGetUserID(userId: Int) {
-        Log.d("MainActivity", "UserId: $userId.toString()")
+        Log.d("MainActivity", "UserId: $userId")
     }
 
     override fun onObtained(deviceId: String?) {
-        Log.d("MainActivity", "DeviceId: $deviceId.toString()")
+        Log.d("MainActivity", "DeviceId: $deviceId")
     }
 }

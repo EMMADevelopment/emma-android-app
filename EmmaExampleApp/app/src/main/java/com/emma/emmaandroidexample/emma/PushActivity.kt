@@ -12,13 +12,17 @@ import io.emma.android.model.EMMAPushCampaign
 class PushActivity : ComponentActivity(), EMMANotificationInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d("PushActivity", "onCreate")
+
         EMMA.getInstance().checkForRichPushUrl() // Para comprobar el richPushUrl cuando se abre la app desde la notificación
         EMMA.getInstance().getNotificationInfo() // Obtener qué se recibe de un Push
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        EMMA.getInstance().onNewNotification(intent, true) // Verificará si el usuario ha recibido una notificación cuando la app esta abierta
+        Log.d("PushActivity", "onNewIntent")
+        EMMA.getInstance().onNewNotification(intent, true) // Verificará si el usuario ha recibido una notificación cuando la app está abierta
     }
 
     // Controlar qué se recibe de un Push

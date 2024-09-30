@@ -17,11 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.emma.emmaandroidexample.ui.theme.EmmaDark
 
 @Composable
 fun NativeAdScreen(
-    nativeAdViewModel: NativeAdViewModel
+    nativeAdViewModel: NativeAdViewModel = viewModel()
 ) {
     val nativeAd by nativeAdViewModel.nativeAdReceived.collectAsState()
 

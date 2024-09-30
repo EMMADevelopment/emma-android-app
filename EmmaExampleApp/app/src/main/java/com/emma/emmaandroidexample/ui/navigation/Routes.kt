@@ -6,5 +6,5 @@ sealed class Routes(val route: String) {
         fun createRouteWithDeeplink(deeplink: String) = "homeScreen/$deeplink"
     }
     object NativeAdScreen : Routes("nativeAdScreen")
-    object DeeplinkScreen : Routes("deeplink")
+    object DeeplinkScreen : Routes("test")
 }

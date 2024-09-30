@@ -19,13 +19,17 @@
             android:name=".emma.PushActivity"
             android:exported="false" />
         <activity
+            android:name=".emma.NativeAdsActivity"
+            android:exported="false" />
+        <activity
             android:name=".emma.CustomDeeplinkActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:label="@string/app_name"
-            android:theme="@style/Theme.EmmaAndroidExample">
+            android:theme="@style/Theme.AnimatedSplash.MySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +39,6 @@
         <activity
             android:name="io.emma.android.activities.EMMADeepLinkActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -44,7 +47,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="https" />
+                <data android:scheme="emmaio"/>
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -53,15 +56,15 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="https" />
-                <data android:host="subdomain.powlink.io" />
+                <data android:host="emmaio.powlink.io" />
                 <data android:scheme="https" />
-                <data android:host="shortsubdomain.pwlnk.io" />
+                <data android:host="emma.pwlnk.io" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="io.emma.DEEPLINK_OPEN_ACTIVITY"
-            android:value="com.emma.emmaandroidexample.CustomDeeplinkActivity" />
+            android:value="com.emma.emmaandroidexample.emma.CustomDeeplinkActivity" />
 
         <service
             android:name="io.emma.android.push.EMMAFcmMessagingService"

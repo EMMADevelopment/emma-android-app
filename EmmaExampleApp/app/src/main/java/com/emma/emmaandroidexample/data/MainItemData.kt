@@ -12,14 +12,6 @@ data class MainItemData(
 
 val mainData: List<MainItemData> = listOf(
     MainItemData(
-        title = R.string.session_title,
-        description = R.string.session_description,
-        statusInfo = R.string.session_status,
-        buttons = listOf(
-            Button(title = R.string.session_button_start_session, active = false)
-        )
-    ),
-    MainItemData(
         title = R.string.register_title,
         description = null,
         statusInfo = null,
@@ -63,7 +55,7 @@ val mainData: List<MainItemData> = listOf(
             Button(title = R.string.orders_button_start_order, active = true),
             Button(title = R.string.orders_button_add_order, active = false),
             Button(title = R.string.orders_button_track_order, active = false),
-            Button(title = R.string.orders_button_cancel_order, active = false),
+            Button(title = R.string.orders_button_cancel_order, active = true),
         )
     ),
     MainItemData(

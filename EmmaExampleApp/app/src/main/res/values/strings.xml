@@ -4,12 +4,14 @@
     <!-- Deeplink -->
     <string name="deeplink_title">Deeplink</string>
     <string name="deeplink_description">Received deeplink will be displayed here.</string>
-    <string name="deeplink_status">No deeplink</string>
+    <string name="deeplink_status_no">No deeplink</string>
+    <string name="deeplink_status_displayed">Deeplink displayed</string>
 
     <!-- Session -->
     <string name="session_title">Session</string>
     <string name="session_description">Session is required. Usually, it should be triggered when the App is ready.</string>
-    <string name="session_status">Session started</string>
+    <string name="session_status_started">Session started</string>
+    <string name="session_status_no_started">Session not started</string>
     <string name="session_button_start_session">Start session</string>
 
     <!-- Register User -->

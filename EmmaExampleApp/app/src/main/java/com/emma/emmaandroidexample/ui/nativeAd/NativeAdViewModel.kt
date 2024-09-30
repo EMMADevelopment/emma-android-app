@@ -23,7 +23,9 @@ class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativ
     val nativeAdsReceived: StateFlow<List<EMMANativeAd>> = _nativeAdsReceived.asStateFlow()
 
     init {
+        Log.d("NativeAdViewModel", "Init NativeAdViewModel")
         getNativeAd("template2")
+        Log.d("NativeAdViewModel", "getNativeAd called")
     }
 
     private fun getNativeAd(templateId: String) {
@@ -50,9 +52,9 @@ class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativ
     override fun onReceived(nativeAd: EMMANativeAd?) {
         if (nativeAd != null) {
             val content = nativeAd.nativeAdContent
-            val title = content?.get("title")?.fieldValue
+            val title = content?.get("Title")?.fieldValue
             if (title != null) {
-                Log.d("SALVA", "Received NativeAd with Title: $title")
+                Log.d("NativeAdViewModel", "Received NativeAd with Title: $title")
                 EMMA.getInstance().sendInAppImpression(CommunicationTypes.NATIVE_AD, nativeAd)
             }
             _nativeAdReceived.update { nativeAd }
@@ -62,20 +64,20 @@ class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativ
     override fun onBatchReceived(nativeAds: MutableList<EMMANativeAd>?) {
         nativeAds?.forEach { nativeAd ->
             nativeAd.tag?.let { tag ->
-                Log.d("SALVA", "Received batch nativead with tag: $tag")
+                Log.d("NativeAdViewModel", "Received batch nativead with tag: $tag")
             }
         }
     }
 
     override fun onShown(campaign: EMMACampaign?) {
-        Log.d("SALVA", "Método onShown invocado")
+        Log.d("NativeAdViewModel", "Método onShown invocado")
     }
 
     override fun onHide(campaign: EMMACampaign?) {
-        Log.d("SALVA", "Método onHide invocado")
+        Log.d("NativeAdViewModel", "Método onHide invocado")
     }
 
     override fun onClose(campaign: EMMACampaign?) {
-        Log.d("SALVA", "Método onClose invocado")
+        Log.d("NativeAdViewModel", "Método onClose invocado")
     }
 }
