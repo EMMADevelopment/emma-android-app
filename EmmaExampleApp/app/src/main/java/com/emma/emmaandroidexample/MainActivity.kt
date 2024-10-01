@@ -115,7 +115,8 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInf
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        EMMA.getInstance().onNewNotification(intent, true)
+        Log.d("MainActivity", "onNewIntent")
+        EMMA.getInstance().onNewNotification(intent, true) // Verificará si el usuario ha recibido una notificación cuando la app está abierta
     }
 
     // Controlar qué se recibe de un Push

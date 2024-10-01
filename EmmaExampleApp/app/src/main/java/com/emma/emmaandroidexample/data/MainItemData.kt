@@ -53,8 +53,8 @@ val mainData: List<MainItemData> = listOf(
         statusInfo = null,
         buttons = listOf(
             Button(title = R.string.orders_button_start_order, active = true),
-            Button(title = R.string.orders_button_add_order, active = false),
-            Button(title = R.string.orders_button_track_order, active = false),
+            Button(title = R.string.orders_button_add_order, active = true),
+            Button(title = R.string.orders_button_track_order, active = true),
             Button(title = R.string.orders_button_cancel_order, active = true),
         )
     ),

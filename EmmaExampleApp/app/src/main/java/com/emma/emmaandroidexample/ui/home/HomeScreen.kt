@@ -106,8 +106,7 @@ fun manageButtonClick(
         R.string.session_button_start_session -> Log.d("SALVA", "START SESSION")
         R.string.register_button_register_user -> {
             Log.d("HomeScreen", "REGISTER USER")
-            //homeViewModel.register("654321", "testSalva@emma.io")
-            homeViewModel.updateDeeplink("test")
+            homeViewModel.register("654321", "testSalva@emma.io")
         }
         R.string.log_button_log_in_user -> {
             Log.d("HomeScreen", "LOG IN USER")
