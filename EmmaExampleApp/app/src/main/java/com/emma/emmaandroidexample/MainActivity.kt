@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.emma.PushActivity
 import com.emma.emmaandroidexample.ui.home.HomeViewModel
@@ -32,7 +33,9 @@ import org.json.JSONObject
 class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInfoInterface, EMMADeviceIdListener {
     // VIEW MODELS
     private val mainViewModel: MainViewModel by viewModels()
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+    }
     //private val nativeAdViewModel: NativeAdViewModel by viewModels()
 
     // PROPERTIES
@@ -98,11 +101,11 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInf
                 ) {
                     val navController = rememberNavController()
 
-                    val deeplinkUrl = intent?.getStringExtra("DEEPLINK_URL")
+                    //val deeplinkUrl = intent?.getStringExtra("DEEPLINK_URL")
 
-                    LaunchedEffect(deeplinkUrl) {
-                        navController.navigate(Routes.HomeScreen.createRouteWithDeeplink(deeplinkUrl ?: "Deeplink did not arrive"))
-                    }
+                    //LaunchedEffect(deeplinkUrl) {
+                    //    navController.navigate(Routes.HomeScreen.createRouteWithDeeplink(deeplinkUrl ?: "Deeplink did not arrive"))
+                    //}
 
                     EmmaAndroidExampleNavigation(navController, homeViewModel, sessionStarted)
                 }

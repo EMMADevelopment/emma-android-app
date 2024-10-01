@@ -1,7 +1,5 @@
 package com.emma.emmaandroidexample.ui.home
 
-import android.content.Context
-import android.content.Intent
 import android.util.ArrayMap
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -9,20 +7,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emma.emmaandroidexample.R
-import com.emma.emmaandroidexample.data.MainItemData
 import com.emma.emmaandroidexample.data.learnMoreData
 import com.emma.emmaandroidexample.data.mainData
 import com.emma.emmaandroidexample.domain.Button
-import com.emma.emmaandroidexample.emma.NativeAdsActivity
-import com.emma.emmaandroidexample.ui.home.components.EmmaButton
 import com.emma.emmaandroidexample.ui.home.components.Header
 import com.emma.emmaandroidexample.ui.home.components.LearnMoreItem
 import com.emma.emmaandroidexample.ui.home.components.MainItem
@@ -33,9 +31,14 @@ fun HomeScreen(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
     sessionStarted: Boolean,
-    deeplink: String?
+    //deeplink: String?
 ) {
-    val context = LocalContext.current
+
+    val deeplink by homeViewModel.deeplink.collectAsState()
+    LaunchedEffect(deeplink) {
+        Log.d("HomeScreen", deeplink ?: "Deeplink vacío")
+    }
+
 
     LazyColumn {
         // HEADER
@@ -43,26 +46,14 @@ fun HomeScreen(
             Header()
         }
         // DEEPLINK
-        if (deeplink != null) {
-            item {
-                MainItem(
-                    title = stringResource(R.string.deeplink_title),
-                    description = deeplink,
-                    statusInfo = stringResource(R.string.deeplink_status_displayed),
-                    buttons = null,
-                    onClick = {}
-                )
-            }
-        } else {
-            item {
-                MainItem(
-                    title = stringResource(R.string.deeplink_title),
-                    description = stringResource(R.string.deeplink_description),
-                    statusInfo = stringResource(R.string.deeplink_status_no),
-                    buttons = null,
-                    onClick = {}
-                )
-            }
+        item {
+            MainItem(
+                title = stringResource(R.string.deeplink_title),
+                description = deeplink ?: stringResource(R.string.deeplink_description),
+                statusInfo = if (deeplink != null) stringResource(R.string.deeplink_status_displayed) else stringResource(R.string.deeplink_status_no),
+                buttons = null,
+                onClick = {}
+            )
         }
         // SESSION
         if (sessionStarted) {
@@ -96,7 +87,7 @@ fun HomeScreen(
                 statusInfo = it.statusInfo?.let { it1 -> stringResource(id = it1) },
                 buttons = it.buttons
             ) { stringId ->
-                manageButtonClick(stringId, navController, homeViewModel, context)
+                manageButtonClick(stringId, navController, homeViewModel)
             }
         }
         // FOOTER
@@ -110,13 +101,13 @@ fun manageButtonClick(
     stringId: Int,
     navController: NavHostController,
     homeViewModel: HomeViewModel,
-    context: Context
 ) {
     when (stringId) {
         R.string.session_button_start_session -> Log.d("SALVA", "START SESSION")
         R.string.register_button_register_user -> {
             Log.d("HomeScreen", "REGISTER USER")
-            homeViewModel.register("654321", "testSalva@emma.io")
+            //homeViewModel.register("654321", "testSalva@emma.io")
+            homeViewModel.updateDeeplink("test")
         }
         R.string.log_button_log_in_user -> {
             Log.d("HomeScreen", "LOG IN USER")
@@ -167,7 +158,7 @@ fun manageButtonClick(
             Log.d("HomeScreen", "CANCEL ORDER")
             homeViewModel.cancelTransaction("<ORDER_ID_SALVA_TEST>")
         }
-        R.string.idfa_button_request_idfa_tracking -> Log.d("SALVA", "REQUEST IDFA TRACKING")
+        R.string.idfa_button_request_idfa_tracking -> Log.d("HomeScreen", "REQUEST IDFA TRACKING")
         else -> {
             Log.d("HomeScreen", "Button not found!")
         }
@@ -193,7 +184,7 @@ fun Footer() {
 @Preview(showSystemUi = true)
 @Composable
 fun TestMain_Preview() {
-    val navController = rememberNavController()
-    val homeViewModel = HomeViewModel()
-    HomeScreen(navController, homeViewModel, true, "https/...")
+    //val navController = rememberNavController()
+    //val homeViewModel = HomeViewModel()
+    //HomeScreen(navController, homeViewModel, true)
 }

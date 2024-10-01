@@ -21,16 +21,16 @@ fun EmmaAndroidExampleNavigation(
     NavHost(navController = navController, startDestination = Routes.HomeScreen.createRoute()) {
         // HOME SCREEN
         composable(Routes.HomeScreen.createRoute()) {
-            HomeScreen(navController, homeViewModel, sessionStarted, null)
+            HomeScreen(navController, homeViewModel, sessionStarted)
         }
         // HOME SCREEN WITH DEEPLINK
-        composable(
-            Routes.HomeScreen.route,
-            arguments = listOf(navArgument("deeplink") { defaultValue = "" })
-        ) {
-            val deeplink = it.arguments?.getString("deeplinkUrl")
-            HomeScreen(navController = navController, homeViewModel, sessionStarted, deeplink)
-        }
+        //composable(
+        //    Routes.HomeScreen.route,
+        //    arguments = listOf(navArgument("deeplink") { defaultValue = "" })
+        //) {
+        //    //val deeplink = it.arguments?.getString("deeplinkUrl")
+        //    HomeScreen(navController = navController, homeViewModel, sessionStarted)
+        //}
         // NATIVE AD SCREEN
         composable(Routes.NativeAdScreen.route) {
             NativeAdScreen()

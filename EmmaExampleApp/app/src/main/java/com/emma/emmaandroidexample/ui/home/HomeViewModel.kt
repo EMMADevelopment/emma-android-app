@@ -1,15 +1,49 @@
 package com.emma.emmaandroidexample.ui.home
 
+import android.app.Application
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.util.ArrayMap
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.emma.android.EMMA
 import io.emma.android.interfaces.EMMAInAppMessageInterface
 import io.emma.android.model.EMMACampaign
 import io.emma.android.model.EMMAEventRequest
 import io.emma.android.model.EMMAInAppRequest
+import io.emma.android.model.EMMANativeAd
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
-class HomeViewModel: ViewModel(), EMMAInAppMessageInterface {
+class HomeViewModel(application: Application): AndroidViewModel(application), EMMAInAppMessageInterface {
+
+    private val _deeplink = MutableStateFlow<String?>(null)
+    val deeplink: StateFlow<String?> = _deeplink.asStateFlow()
+
+    private val deeplinkReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val deeplink = intent?.getStringExtra("DEEPLINK")
+            _deeplink.value = deeplink
+        }
+    }
+
+    init {
+        val filter = IntentFilter("UPDATE_DEEPLINK")
+        LocalBroadcastManager.getInstance(getApplication()).registerReceiver(deeplinkReceiver, filter)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        // Desregistra el receptor para evitar fugas de memoria
+        LocalBroadcastManager.getInstance(getApplication()).unregisterReceiver(deeplinkReceiver)
+    }
+
     // Enviar información sobre los registros en la aplicación
     fun register(userId: String, mail: String) {
         EMMA.getInstance().registerUser(userId, mail)
@@ -79,14 +113,20 @@ class HomeViewModel: ViewModel(), EMMAInAppMessageInterface {
 
     // EMMAInAppMessageInterface
     override fun onShown(campaign: EMMACampaign?) {
-        Log.d("SALVA", "Método onShown invocado")
+        Log.d("HomeViewModel", "Método onShown invocado")
     }
 
     override fun onHide(campaign: EMMACampaign?) {
-        Log.d("SALVA", "Método onHide invocado")
+        Log.d("HomeViewModel", "Método onHide invocado")
     }
 
     override fun onClose(campaign: EMMACampaign?) {
-        Log.d("SALVA", "Método onClose invocado")
+        Log.d("HomeViewModel", "Método onClose invocado")
+    }
+
+    fun updateDeeplink(uri: String) {
+        Log.d("HomeViewModel", "Se ha actualizado a: $uri")
+        _deeplink.update { uri }
+        Log.d("HomeViewModel", "Deeplink es: ${deeplink.value}")
     }
 }
