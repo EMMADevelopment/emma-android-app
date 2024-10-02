@@ -16,18 +16,27 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativeAdInterface, EMMANativeAdInterface {
+    // VIEW STATE
+    private val _viewState = MutableStateFlow<NativeAdViewState>(NativeAdViewState.Idle)
+    val viewState: StateFlow<NativeAdViewState> = _viewState.asStateFlow()
+
+    // PROPERTIES
     private val _nativeAdReceived = MutableStateFlow<EMMANativeAd?>(null)
     val nativeAdReceived: StateFlow<EMMANativeAd?> = _nativeAdReceived.asStateFlow()
 
     private val _nativeAdsReceived = MutableStateFlow<List<EMMANativeAd>>(emptyList())
     val nativeAdsReceived: StateFlow<List<EMMANativeAd>> = _nativeAdsReceived.asStateFlow()
 
+    // INIT
     init {
         Log.d("NativeAdViewModel", "Init NativeAdViewModel")
-        getNativeAd("template2")
+        _viewState.update { NativeAdViewState.Loading }
+        Log.d("NativeAdViewModel", "NativeAdViewState.Loading")
+        getNativeAd("template2") // Al ViewModel se le podría pasar el templateId dependiendo de la pantalla de donde se venga
         Log.d("NativeAdViewModel", "getNativeAd called")
     }
 
+    // FUNCTIONS
     private fun getNativeAd(templateId: String) {
         val nativeAdRequest = EMMANativeAdRequest()
         nativeAdRequest.templateId = templateId
@@ -58,6 +67,9 @@ class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativ
                 EMMA.getInstance().sendInAppImpression(CommunicationTypes.NATIVE_AD, nativeAd)
             }
             _nativeAdReceived.update { nativeAd }
+            _viewState.update { NativeAdViewState.Loaded }
+        } else {
+            _viewState.update { NativeAdViewState.WithoutNativeAd }
         }
     }
 
