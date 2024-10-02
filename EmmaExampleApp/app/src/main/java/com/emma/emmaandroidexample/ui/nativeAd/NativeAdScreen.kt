@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -23,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.emma.emmaandroidexample.ui.nativeAd.components.NativeAdCard
+import com.emma.emmaandroidexample.ui.nativeAd.components.NativeAdCarousel
 import com.emma.emmaandroidexample.ui.theme.EmmaDark
 import com.emma.emmaandroidexample.ui.theme.EmmaLight
+import com.emma.emmaandroidexample.ui.theme.EmmaMedium
 import io.emma.android.EMMA
 import io.emma.android.enums.CommunicationTypes
 import io.emma.android.model.EMMANativeAd
@@ -35,24 +38,37 @@ fun NativeAdScreen(
 ) {
     val viewState by nativeAdViewModel.viewState.collectAsState()
     val nativeAd by nativeAdViewModel.nativeAdReceived.collectAsState()
+    val nativeAdsBatch by nativeAdViewModel.nativeAdsReceived.collectAsState()
+
+    LaunchedEffect(nativeAdsBatch) {
+        if (nativeAdsBatch.isNotEmpty()) {
+            nativeAdsBatch.forEach { nativeAd ->
+                val content = nativeAd.nativeAdContent
+                val title = content?.get("Title")?.fieldValue
+                Log.d("NativeAdScreen", title ?: "Title vacío")
+            }
+        }
+    }
 
     when (viewState) {
         is NativeAdViewState.Idle -> {}
         is NativeAdViewState.Loading -> { Loading() }
-        is NativeAdViewState.Loaded -> {
-            nativeAd?.let { Loaded(nativeAdViewModel, it) }
-        }
+        is NativeAdViewState.Loaded -> { Loaded(nativeAdViewModel, nativeAd, nativeAdsBatch) }
         is NativeAdViewState.WithoutNativeAd -> { WithoutNativeAd() }
     }
 }
 
 @Composable
-fun Loaded(nativeAdViewModel: NativeAdViewModel, nativeAd: EMMANativeAd) {
-    val content = nativeAd.nativeAdContent
+fun Loaded(
+    nativeAdViewModel: NativeAdViewModel,
+    nativeAd: EMMANativeAd?,
+    nativeAdsBatch: List<EMMANativeAd>
+) {
+    val content = nativeAd?.nativeAdContent
     val title = content?.get("Title")?.fieldValue
     val subtitle = content?.get("Subtitle")?.fieldValue
-    val image = content["Main picture"]?.fieldValue
-    val cta = content["CTA"]?.fieldValue
+    val image = content?.get("Main picture")?.fieldValue
+    val cta = content?.get("CTA")?.fieldValue
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -64,8 +80,11 @@ fun Loaded(nativeAdViewModel: NativeAdViewModel, nativeAd: EMMANativeAd) {
             subtitle ?: "Subtitle 1",
             image ?: "https://picsum.photos/200/300",
         ) {
-            nativeAdViewModel.openNativeAd(nativeAd)
+            nativeAd?.let {
+                nativeAdViewModel.openNativeAd(nativeAd)
+            }
         }
+        NativeAdCarousel(nativeAds = nativeAdsBatch)
     }
 }
 
@@ -74,7 +93,7 @@ fun Loading() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(EmmaLight), contentAlignment = Alignment.Center
+            .background(EmmaMedium), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(color = EmmaDark, modifier = Modifier)
     }
@@ -111,12 +130,22 @@ fun WithoutNativeAd() {
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                Text(
-                    "Ups... Ha ocurrido un error. No hay NativeAd en activo en la plataforma de EMMA o no se ha recibido el NativeAd configurado.",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        "Ups... Ha ocurrido un error. No se ha recibido ningún NativeAd.",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        "No hay NativeAd en activo en la plataforma de EMMA o no se ha recibido el NativeAd único o múltiple configurado.",
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
             }
             Box(
                 contentAlignment = Alignment.Center,
@@ -135,4 +164,16 @@ fun WithoutNativeAd() {
 fun NativeAdScreen_Preview() {
     val nativeAdViewModel = NativeAdViewModel()
     NativeAdScreen(nativeAdViewModel)
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun Loading_Preview() {
+    Loading()
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun WithoutNativeAd_Preview() {
+    WithoutNativeAd()
 }
