@@ -84,7 +84,9 @@ fun Loaded(
                 nativeAdViewModel.openNativeAd(nativeAd)
             }
         }
-        NativeAdCarousel(nativeAds = nativeAdsBatch)
+        NativeAdCarousel(nativeAds = nativeAdsBatch) { index ->
+            nativeAdViewModel.openNativeAd(nativeAdsBatch[index])
+        }
     }
 }
 

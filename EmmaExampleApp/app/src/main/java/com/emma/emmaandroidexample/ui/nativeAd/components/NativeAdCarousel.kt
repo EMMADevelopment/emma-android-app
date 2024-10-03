@@ -1,5 +1,6 @@
 package com.emma.emmaandroidexample.ui.nativeAd.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,7 +36,8 @@ import kotlin.math.absoluteValue
 
 @Composable
 fun NativeAdCarousel(
-    nativeAds: List<EMMANativeAd>
+    nativeAds: List<EMMANativeAd>,
+    onClick: (Int) -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0) {
         nativeAds.size
@@ -48,7 +50,9 @@ fun NativeAdCarousel(
             index = index,
             nativeAds = nativeAds,
             pagerState = pagerState
-        )
+        ) {
+            onClick(index)
+        }
     }
 }
 
@@ -56,7 +60,8 @@ fun NativeAdCarousel(
 fun CardContent(
     index: Int,
     nativeAds: List<EMMANativeAd>,
-    pagerState: PagerState
+    pagerState: PagerState,
+    onClick: () -> Unit
 ) {
     val content = nativeAds[index].nativeAdContent
     val title = content["Title"]?.fieldValue
@@ -68,21 +73,24 @@ fun CardContent(
 
     Card(
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.padding(2.dp).graphicsLayer {
-            lerp(
-                start = 0.85f.dp,
-                stop = 1f.dp,
-                fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
-            ).also { scale ->
-                scaleX = scale.value
-                scaleY = scale.value
+        modifier = Modifier
+            .padding(2.dp)
+            .graphicsLayer {
+                lerp(
+                    start = 0.85f.dp,
+                    stop = 1f.dp,
+                    fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
+                ).also { scale ->
+                    scaleX = scale.value
+                    scaleY = scale.value
+                }
+                alpha = lerp(
+                    start = 0.5f.dp,
+                    stop = 1f.dp,
+                    fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
+                ).value
             }
-            alpha = lerp(
-                start = 0.5f.dp,
-                stop = 1f.dp,
-                fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f)
-            ).value
-        }
+            .clickable { onClick() }
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
