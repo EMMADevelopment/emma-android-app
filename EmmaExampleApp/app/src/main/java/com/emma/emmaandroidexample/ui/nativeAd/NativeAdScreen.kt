@@ -1,6 +1,5 @@
 package com.emma.emmaandroidexample.ui.nativeAd
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,17 +34,6 @@ fun NativeAdScreen(
     val viewState by nativeAdViewModel.viewState.collectAsState()
     val nativeAd by nativeAdViewModel.nativeAdReceived.collectAsState()
     val nativeAdsBatch by nativeAdViewModel.nativeAdsReceived.collectAsState()
-
-    // A ELIMINAR
-    LaunchedEffect(nativeAdsBatch) {
-        if (nativeAdsBatch.isNotEmpty()) {
-            nativeAdsBatch.forEach { nativeAd ->
-                val content = nativeAd.nativeAdContent
-                val title = content?.get("Title")?.fieldValue
-                Log.d("NativeAdScreen", title ?: "Title vacío")
-            }
-        }
-    }
 
     when (viewState) {
         is NativeAdViewState.Idle -> {}

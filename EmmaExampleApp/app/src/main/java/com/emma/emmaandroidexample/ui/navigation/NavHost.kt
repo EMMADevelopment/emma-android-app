@@ -15,22 +15,13 @@ import com.emma.emmaandroidexample.ui.nativeAd.NativeAdViewModel
 fun EmmaAndroidExampleNavigation(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
-    //nativeAdViewModel: NativeAdViewModel,
     sessionStarted: Boolean,
 ) {
-    NavHost(navController = navController, startDestination = Routes.HomeScreen.createRoute()) {
+    NavHost(navController = navController, startDestination = Routes.HomeScreen.route) {
         // HOME SCREEN
-        composable(Routes.HomeScreen.createRoute()) {
+        composable(Routes.HomeScreen.route) {
             HomeScreen(navController, homeViewModel, sessionStarted)
         }
-        // HOME SCREEN WITH DEEPLINK
-        //composable(
-        //    Routes.HomeScreen.route,
-        //    arguments = listOf(navArgument("deeplink") { defaultValue = "" })
-        //) {
-        //    //val deeplink = it.arguments?.getString("deeplinkUrl")
-        //    HomeScreen(navController = navController, homeViewModel, sessionStarted)
-        //}
         // NATIVE AD SCREEN
         composable(Routes.NativeAdScreen.route) {
             NativeAdScreen()

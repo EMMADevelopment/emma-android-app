@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import com.emma.emmaandroidexample.R
 import io.emma.android.EMMA
-import io.emma.android.interfaces.EMMANotificationInterface
-import io.emma.android.model.EMMAPushCampaign
 
 class PushActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

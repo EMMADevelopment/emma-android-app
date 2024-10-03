@@ -12,7 +12,6 @@ import io.emma.android.model.EMMACampaign
 import io.emma.android.model.EMMANativeAd
 import io.emma.android.model.EMMANativeAdRequest
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 
 class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativeAdInterface, EMMANativeAdInterface {
     // VIEW STATE

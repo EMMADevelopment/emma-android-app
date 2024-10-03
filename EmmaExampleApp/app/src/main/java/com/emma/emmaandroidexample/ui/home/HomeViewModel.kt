@@ -8,24 +8,21 @@ import android.content.IntentFilter
 import android.util.ArrayMap
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.emma.android.EMMA
 import io.emma.android.interfaces.EMMAInAppMessageInterface
 import io.emma.android.model.EMMACampaign
 import io.emma.android.model.EMMAEventRequest
 import io.emma.android.model.EMMAInAppRequest
-import io.emma.android.model.EMMANativeAd
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 class HomeViewModel(application: Application): AndroidViewModel(application), EMMAInAppMessageInterface {
-
+    // PROPERTIES
     private val _deeplink = MutableStateFlow<String?>(null)
     val deeplink: StateFlow<String?> = _deeplink.asStateFlow()
-
+    // Broadcast receiver
     private val deeplinkReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val deeplink = intent?.getStringExtra("DEEPLINK")
@@ -33,11 +30,13 @@ class HomeViewModel(application: Application): AndroidViewModel(application), EM
         }
     }
 
+    // INIT
     init {
         val filter = IntentFilter("UPDATE_DEEPLINK")
         LocalBroadcastManager.getInstance(getApplication()).registerReceiver(deeplinkReceiver, filter)
     }
 
+    // FUNCTIONS
     override fun onCleared() {
         super.onCleared()
         // Desregistra el receptor para evitar fugas de memoria
@@ -122,11 +121,5 @@ class HomeViewModel(application: Application): AndroidViewModel(application), EM
 
     override fun onClose(campaign: EMMACampaign?) {
         Log.d("HomeViewModel", "Método onClose invocado")
-    }
-
-    fun updateDeeplink(uri: String) {
-        Log.d("HomeViewModel", "Se ha actualizado a: $uri")
-        _deeplink.update { uri }
-        Log.d("HomeViewModel", "Deeplink es: ${deeplink.value}")
     }
 }

@@ -19,9 +19,6 @@
             android:name=".emma.PushActivity"
             android:exported="false" />
         <activity
-            android:name=".emma.NativeAdsActivity"
-            android:exported="false" />
-        <activity
             android:name=".emma.CustomDeeplinkActivity"
             android:exported="false" />
         <activity

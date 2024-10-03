@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInf
     private val homeViewModel: HomeViewModel by viewModels {
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     }
-    //private val nativeAdViewModel: NativeAdViewModel by viewModels()
 
     // PROPERTIES
     private var sessionStarted: Boolean = false
@@ -100,12 +99,6 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInf
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-
-                    //val deeplinkUrl = intent?.getStringExtra("DEEPLINK_URL")
-
-                    //LaunchedEffect(deeplinkUrl) {
-                    //    navController.navigate(Routes.HomeScreen.createRouteWithDeeplink(deeplinkUrl ?: "Deeplink did not arrive"))
-                    //}
 
                     EmmaAndroidExampleNavigation(navController, homeViewModel, sessionStarted)
                 }
