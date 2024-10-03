@@ -12,12 +12,15 @@ import io.emma.android.model.EMMACampaign
 import io.emma.android.model.EMMANativeAd
 import io.emma.android.model.EMMANativeAdRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 
 class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativeAdInterface, EMMANativeAdInterface {
     // VIEW STATE
@@ -51,6 +54,17 @@ class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativ
             withContext(Dispatchers.IO) {
                 getNativeAdBatch("batch-template1")
                 Log.d("NativeAdViewModel", "getNativeAdBatch called")
+            }
+            // Aquí gestionamos el estado de la vista dependiendo de los valores que tengamos en _nativeAdReceived
+            // y _nativeAdsReceived. Esperamos con un breve delay para recibir la información de los NativeAds.
+            // Se emplea así por exigencia situacional de esta app de prueba.
+            delay(2000)
+            withContext(Dispatchers.Main) {
+                if (_nativeAdReceived.value == null && _nativeAdsReceived.value.isEmpty()) {
+                    _viewState.update { NativeAdViewState.WithoutNativeAd }
+                } else {
+                    _viewState.update { NativeAdViewState.Loaded }
+                }
             }
         }
     }
@@ -101,14 +115,6 @@ class NativeAdViewModel : ViewModel(), EMMAInAppMessageInterface, EMMABatchNativ
                 nativeAdList.add(nativeAd)
             }
             _nativeAdsReceived.update { nativeAdList }
-        }
-        // Como el Batch es el último en procesarse (se llama primero a los NativeAds únicos en el init),
-        // aquí gestionamos el estado de la vista dependiendo de los valores que tengamos en _nativeAdReceived
-        // y _nativeAdsReceived
-        if (_nativeAdReceived.value == null && _nativeAdsReceived.value.isEmpty()) {
-            _viewState.update { NativeAdViewState.WithoutNativeAd }
-        } else {
-            _viewState.update { NativeAdViewState.Loaded }
         }
     }
 

@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity(), EMMANotificationInterface, EMMAUserInf
         // INICIALIZACIÓN DE EMMA
         try {
             val configuration = EMMA.Configuration.Builder(this)
-                .setSessionKey("emmamobileM6wQcLX8S")
+                .setSessionKey("")
                 .setDebugActive(BuildConfig.DEBUG)
                 .build()
 

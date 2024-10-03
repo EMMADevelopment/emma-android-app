@@ -39,7 +39,7 @@ fun NativeAdCard(
         elevation = CardDefaults.cardElevation(6.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(175.dp)
             .clickable { onClick() }
     ) {
         Box(
@@ -48,7 +48,7 @@ fun NativeAdCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
+                    .data(imageUrl.ifEmpty { R.drawable.ic_launcher_background })
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.ic_launcher_background),

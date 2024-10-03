@@ -26,10 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.emma.emmaandroidexample.ui.nativeAd.components.NativeAdCard
 import com.emma.emmaandroidexample.ui.nativeAd.components.NativeAdCarousel
 import com.emma.emmaandroidexample.ui.theme.EmmaDark
-import com.emma.emmaandroidexample.ui.theme.EmmaLight
 import com.emma.emmaandroidexample.ui.theme.EmmaMedium
-import io.emma.android.EMMA
-import io.emma.android.enums.CommunicationTypes
 import io.emma.android.model.EMMANativeAd
 
 @Composable
@@ -40,6 +37,7 @@ fun NativeAdScreen(
     val nativeAd by nativeAdViewModel.nativeAdReceived.collectAsState()
     val nativeAdsBatch by nativeAdViewModel.nativeAdsReceived.collectAsState()
 
+    // A ELIMINAR
     LaunchedEffect(nativeAdsBatch) {
         if (nativeAdsBatch.isNotEmpty()) {
             nativeAdsBatch.forEach { nativeAd ->
@@ -75,12 +73,12 @@ fun Loaded(
         modifier = Modifier
             .padding(16.dp)
     ) {
-        NativeAdCard(
-            title ?: "Title",
-            subtitle ?: "Subtitle 1",
-            image ?: "https://picsum.photos/200/300",
-        ) {
-            nativeAd?.let {
+        if (nativeAd != null) {
+            NativeAdCard(
+                title ?: "Title",
+                subtitle ?: "Subtitle 1",
+                image ?: "",
+            ) {
                 nativeAdViewModel.openNativeAd(nativeAd)
             }
         }
@@ -142,7 +140,7 @@ fun WithoutNativeAd() {
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        "No hay NativeAd en activo en la plataforma de EMMA o no se ha recibido el NativeAd único o múltiple configurado.",
+                        "No hay NativeAd en activo en la plataforma de EMMA con la template asignada en el código o no se ha recibido el NativeAd único o múltiple configurado.",
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
                     )

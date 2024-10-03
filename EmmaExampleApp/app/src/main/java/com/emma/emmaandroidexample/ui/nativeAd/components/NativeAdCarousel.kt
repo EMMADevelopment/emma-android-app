@@ -44,7 +44,7 @@ fun NativeAdCarousel(
     }
     HorizontalPager(
         state = pagerState,
-        contentPadding = PaddingValues(50.dp)
+        contentPadding = PaddingValues(horizontal = 50.dp)
     ) {index ->
         CardContent(
             index = index,
